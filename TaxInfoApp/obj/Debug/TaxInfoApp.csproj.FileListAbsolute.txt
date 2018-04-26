@@ -1,0 +1,7 @@
+C:\Users\tw1515\source\repos\TaxInfoApp\TaxInfoApp\obj\Debug\TaxInfoApp.csprojResolveAssemblyReference.cache
+C:\Users\tw1515\source\repos\TaxInfoApp\TaxInfoApp\obj\Debug\TaxInfoApp.csproj.CoreCompileInputs.cache
+C:\Users\tw1515\source\repos\TaxInfoApp\TaxInfoApp\bin\Debug\TaxInfoApp.exe.config
+C:\Users\tw1515\source\repos\TaxInfoApp\TaxInfoApp\bin\Debug\TaxInfoApp.exe
+C:\Users\tw1515\source\repos\TaxInfoApp\TaxInfoApp\bin\Debug\TaxInfoApp.pdb
+C:\Users\tw1515\source\repos\TaxInfoApp\TaxInfoApp\obj\Debug\TaxInfoApp.exe
+C:\Users\tw1515\source\repos\TaxInfoApp\TaxInfoApp\obj\Debug\TaxInfoApp.pdb
