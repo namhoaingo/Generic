@@ -13,11 +13,16 @@ namespace TaxInfoApp.Manager
 
     }
 
-    // This interface will return the T
+    // The out keyword is only for getting item
+    // So I can cast it to the base
     public interface IReadOnlyTaxManager<out T> { 
         T GetTaxInfo();
     }
 
+    //The in keyword is only for adding the item in
+    // Si I can cast it to the children
+    // Because the item should already be the base class,
+    // I should be able to play around with it, or cast it to the child
     public interface IWriteOnlyTaxManager<in T> 
     {
         void SaveTaxInfo(T taxInfo);
@@ -25,7 +30,7 @@ namespace TaxInfoApp.Manager
 
     //Each country will have their own way of read tax info and write tax info
 
-    public abstract class BaseTaxManager<T> : IReadOnlyTaxManager<T> where T :  TaxInfo, new()
+    public abstract class BaseReadOnlyTaxManager<T> : IReadOnlyTaxManager<T> where T :  TaxInfo, new()
 {
         public virtual T GetTaxInfo()
         {            
@@ -34,7 +39,7 @@ namespace TaxInfoApp.Manager
     }
 
 
-    public class DefaultTaxManager<T>: BaseTaxManager<T> where T: TaxInfo, new()
+    public class DefaultReadOnlyTaxManager<T>: BaseReadOnlyTaxManager<T> where T: TaxInfo, new()
     {
         public override T GetTaxInfo()
         {
@@ -44,7 +49,7 @@ namespace TaxInfoApp.Manager
         }
     }
 
-    public class TaiwantTaxManager<T> : DefaultTaxManager<T>, IReadOnlyTaxManager<T> where T : TaiwanTaxInfo, new()
+    public class TaiwanReadOnlyTaxManager<T> : DefaultReadOnlyTaxManager<T>, IReadOnlyTaxManager<T> where T : TaiwanTaxInfo, new()
     {
         public override T GetTaxInfo()
         {
@@ -56,34 +61,50 @@ namespace TaxInfoApp.Manager
     }
 
 
-    //// Only take care of Taiwan TaxInfo
-    //public class TaiwanTaxManager<T>: DefaultTaxManager<T> where T : TaxInfo, new()
-    //{
-    //    public TaiwanTaxManager()
-    //    {
+    public class ChinaReadOnlyTaxManager<T> : DefaultReadOnlyTaxManager<T>, IReadOnlyTaxManager<T> where T : ChinaTaxInfo, new()
+    {
+        public override T GetTaxInfo()
+        {
+            var t = base.GetTaxInfo();
+            t.ChinaID = "China";
+            return t;
 
-    //    }
-    //    public override T GetTaxInfo()
-    //    {
-    //        // Do it the Taiwanese way
-    //        //base.GetTaxInfo();
-    //        Console.WriteLine("GetTaxInfo TW");            
-    //        return new T();
-    //    }
+        }
+    }
 
-    //    public override void SaveTaxInfo(T taxInfo)
-    //    {
-    //        throw new NotImplementedException();
-    //    }
+    public abstract class BaseWriteOnlyTaxManager<T> : IWriteOnlyTaxManager<T> where T : TaxInfo, new()
+    {
+        public virtual void SaveTaxInfo(T taxInfo)
+        {
+            throw new NotImplementedException();
+        }
+    }
+    
+    public class DefaultWriteOnlyTaxManager<T>: BaseWriteOnlyTaxManager<T> where T: TaxInfo, new()
+    {
+        public override void SaveTaxInfo(T taxInfo)
+        {
+            Console.WriteLine(taxInfo.CustomerId);
+        }
+    }
 
-    //    public override T PopulateTaxInfoObject(string input)
-    //    {
-    //        //Base on Country to generate TaxObject
-    //        throw new NotImplementedException();
-    //    }
-    //}
+    public class TaiwanWriteOnlyTaxManager<T> : DefaultWriteOnlyTaxManager<T>, IWriteOnlyTaxManager<T> where T : TaiwanTaxInfo, new()
+    {
+        public override void SaveTaxInfo(T taxInfo)
+        {
+            Console.WriteLine(taxInfo.DonnationCode);
+        }
+    }
 
-       
+
+    public class ChinaWriteOnlyTaxManager<T> : DefaultWriteOnlyTaxManager<T>, IWriteOnlyTaxManager<T> where T : ChinaTaxInfo, new()
+    {
+        public override void SaveTaxInfo(T taxInfo)
+        {
+            Console.WriteLine(taxInfo.ChinaID);
+        }
+    }
+
     public class TaxInfo
     {
         public string Country { get; set; }
@@ -97,5 +118,14 @@ namespace TaxInfoApp.Manager
 
         }
         public string DonnationCode { get; set; }
+    }
+
+    public class ChinaTaxInfo : TaxInfo
+    {
+        public ChinaTaxInfo()
+        {
+
+        }
+        public string ChinaID { get; set; }
     }
 }
